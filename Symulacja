@@ -1,0 +1,25 @@
+using Plots
+using Printf
+
+peop_count=37000000
+meat_diet=5500*70
+vege_diet=meat_diet*(45/100)
+function bar_chart(k)
+    A = peop_count*meat_diet
+    B = ((peop_count)*((100-k)/100))*(meat_diet)+((peop_count)*((0+k)/100))*vege_diet
+    Bf = @sprintf("%.0f", B)
+    C = A-B
+    Cf = @sprintf("%.0f", C)
+    x = ["Zużyta woda w litrach\n przy 100% ludzi\n na diecie mięsnej", "Zużyta woda w litrach\n przy danym procencie ludzi\n na diecie wegetariańskiej", "Zaoszczędzona\n woda w litrach"]
+    y = [A, B, C]
+    colours = [:red, :green, :blue]
+    bar(x, y, color=colours, legend = false)
+    xlabel!("")
+    ylabel!("")
+    title!("Procent Ludzi na diecie wegańskiej: $(k)%")
+end
+
+anim = @animate for k in 0:100
+    bar_chart(k)
+end persist=true
+mp4(anim,"Polska.mp4", fps = 5)

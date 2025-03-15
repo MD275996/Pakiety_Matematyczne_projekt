@@ -1,0 +1,34 @@
+function macierz(k,M)
+       ludzie=37*10^6
+       mięso=5500*70
+       vege=0.45*mięso
+       basen=(3.5)*10^6
+       A = ludzie*mięso
+       B = ((ludzie)*((100-k)/100))*(mięso)+((ludzie)*((0+k)/100))*vege
+       C=A-B
+       ile= Int64(floor(C/basen))
+       for j in 1:Int64(floor(ile/1517))
+           for i in 1:1517
+               M[j,i]=1
+           end
+       end
+       for i in 1:Int64(ile%1517)
+           M[Int64(floor(ile/1517))+1,i]=1
+       end
+       return(M)
+end
+##
+function animacja(M)
+  ludzie=37*10^6
+  mięso=5500*70
+  vege=0.45*mięso
+  basen=(3.5)*10^6
+  am= @animate for k in 1:100
+    C=ludzie*mięso-((ludzie)*((100-k)/100))*(mięso)+((ludzie)*((0+k)/100))*vege
+  ile= Int64(floor(C/basen))
+    M=Matrix(macierz(k,M))
+    heatmap(M,aspect_ratio=1, seriescolor=palette([:white,:black]),title="$(k)% daje $(ile) basenów olimpijskich", colorbar=:none)
+  end
+  gif(am,"baseny-anim.gif",fps=5)
+end
+
